@@ -3,213 +3,177 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#090a0e">
-  <meta name="color-scheme" content="dark light">
-  <meta name="description" content="FORGE Overdrive — private daily quests for VALORANT and VRFS, completed with clips.">
+  <meta name="theme-color" content="#07090d">
+  <meta name="description" content="FORGE // OVERDRIVE — daily VRFS and VALORANT quest progression.">
   <title>FORGE // OVERDRIVE</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="aurora aurora-a" aria-hidden="true"></div>
-  <div class="aurora aurora-b" aria-hidden="true"></div>
+  <canvas id="ambientCanvas" aria-hidden="true"></canvas>
+  <div id="boot" class="boot active" aria-live="polite">
+    <div class="boot-core"><span></span><i></i><b></b></div>
+    <div class="boot-word">FORGE</div>
+    <div class="boot-sub">OVERDRIVE SYSTEM</div>
+    <div class="boot-track"><span id="bootFill"></span></div>
+    <small id="bootText">IGNITING CORE…</small>
+  </div>
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-logo"><span>F</span><i></i></div>
-      <div class="brand-copy"><strong>FORGE</strong><small>OVERDRIVE // V3</small></div>
-    </div>
-
-    <nav class="nav-list" id="navList">
-      <button class="nav-btn active" data-view="today"><span class="nav-icon">✦</span><b>Today</b><em id="navTodayCount">0/5</em></button>
-      <button class="nav-btn" data-view="clips"><span class="nav-icon">▶</span><b>Clips</b><em id="navClipCount">0</em></button>
-      <button class="nav-btn" data-view="progress"><span class="nav-icon">⌁</span><b>Progress</b></button>
-      <button class="nav-btn" data-view="achievements"><span class="nav-icon">◆</span><b>Achievements</b></button>
-      <button class="nav-btn" data-view="history"><span class="nav-icon">◫</span><b>History</b></button>
-      <button class="nav-btn" data-view="analytics"><span class="nav-icon">⌇</span><b>Analytics</b></button>
-      <button class="nav-btn" data-view="collection"><span class="nav-icon">▣</span><b>Collection</b></button>
-      <button class="nav-btn" data-view="settings"><span class="nav-icon">⚙</span><b>Settings</b></button>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <div class="account-mini">
-        <div class="account-mini-top"><span>LVL <b id="sideLevel">1</b></span><span id="sideXpLabel">0 / 100</span></div>
-        <div class="progress-track"><i id="sideXpBar"></i></div>
-        <div class="account-mini-foot"><span id="sideTitle">Rookie</span><span id="sideStreak">0 day streak</span></div>
+  <div id="app" class="app-shell" aria-hidden="true">
+    <header class="topbar glass">
+      <button class="brand" data-nav="home" aria-label="Forge home">
+        <div class="brand-mark"><span></span><i></i></div>
+        <div><strong>FORGE</strong><small>OVERDRIVE</small></div>
+      </button>
+      <div class="pulse-status">
+        <span class="live-dot"></span>
+        <div><small>FORGE PULSE</small><b id="pulseLabel">LIVE</b></div>
       </div>
-      <button class="command-btn" id="openCommand"><span>⌘</span><b>Command</b><kbd>Ctrl K</kbd></button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div class="page-heading">
-        <div class="eyebrow" id="pageEyebrow">DAILY RUN // 5 QUESTS</div>
-        <h1 id="pageTitle">Today</h1>
-      </div>
-      <div class="topbar-actions">
-        <div class="midnight-pill"><span>NEXT BOARD</span><b id="countdown">--:--:--</b></div>
-        <button class="round-btn" id="soundBtn" title="Toggle sounds">◌</button>
-        <button class="round-btn" id="themeBtn" title="Toggle theme">◐</button>
-        <button class="profile-pill" data-view-jump="progress"><span class="profile-orb" id="profileOrb">1</span><span><small>LEVEL</small><b id="profileLevelTop">1</b></span></button>
+      <div class="top-currencies">
+        <div class="currency xp"><small>LV</small><b id="levelTop">1</b></div>
+        <div class="currency spark"><span>✦</span><b id="sparksTop">0</b></div>
+        <button id="menuToggle" class="icon-btn" aria-label="Open menu">☰</button>
       </div>
     </header>
 
-    <section class="view active" id="todayView">
-      <article class="hero-card reveal">
-        <div class="hero-glow"></div>
-        <div class="hero-content">
-          <div class="hero-status"><span class="live-dot"></span><b>DAILY BOARD LIVE</b><em id="heroDateKey">TODAY</em></div>
-          <h2 id="heroDate">Today</h2>
-          <p>Five quests. Two games. The only proof is the clip.</p>
-          <div class="hero-progress-wrap">
-            <div class="hero-progress-top"><span id="heroProgressText">0 of 5 complete</span><strong id="heroProgressPercent">0%</strong></div>
-            <div class="hero-progress"><i id="heroProgressBar"></i><span class="hero-progress-shine"></span></div>
+    <aside id="sidebar" class="sidebar glass">
+      <nav>
+        <button class="nav-item active" data-nav="home"><span>⌂</span><b>Home</b></button>
+        <button class="nav-item" data-nav="board"><span>◆</span><b>Daily Board</b><em id="boardBadge">5</em></button>
+        <button class="nav-item" data-nav="clips"><span>▶</span><b>Clips</b></button>
+        <button class="nav-item" data-nav="progress"><span>↗</span><b>Progress</b></button>
+        <button class="nav-item" data-nav="vault"><span>◇</span><b>Vault</b></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-core">
+          <div class="mini-core-ring"><span id="miniHeat">0</span><small>%</small></div>
+          <div><small>CORE HEAT</small><b id="miniHeatState">COLD</b></div>
+        </div>
+        <button class="nav-item" data-nav="settings"><span>⚙</span><b>Settings</b></button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <section id="page-home" class="page active">
+        <div class="hero-panel panel reveal">
+          <div class="hero-copy">
+            <div class="eyebrow"><span></span> DAILY SYSTEM ONLINE</div>
+            <h1>YOUR NEXT <em>5</em><br>ARE WAITING.</h1>
+            <p>Five fresh quests. Only VRFS and VALORANT. Do them in-game, clip the proof, come back stronger tomorrow.</p>
+            <div class="hero-actions">
+              <button class="btn primary" data-nav="board">OPEN TODAY'S BOARD <span>→</span></button>
+              <button class="btn ghost" data-nav="clips">CLIP LIBRARY</button>
+            </div>
+          </div>
+          <div class="core-visual-wrap">
+            <div id="coreVisual" class="core-visual">
+              <div class="core-orbit orbit-a"><i></i></div>
+              <div class="core-orbit orbit-b"><i></i></div>
+              <div class="core-orbit orbit-c"><i></i></div>
+              <div class="core-center"><span id="heatBig">0</span><small>% HEAT</small></div>
+            </div>
+            <div class="core-caption"><span class="live-dot"></span><b id="coreCaption">BUILDING WHILE YOU'RE AWAY</b></div>
           </div>
         </div>
-        <div class="hero-score">
-          <div class="score-ring" id="scoreRing"><div><strong id="heroDone">0</strong><span>/ 5</span></div></div>
-          <small id="heroBonus">PERFECT BOARD +250 XP</small>
+
+        <div id="awayCard" class="away-card panel reveal hidden">
+          <div class="away-icon">↻</div>
+          <div><small>WHILE YOU WERE AWAY</small><h3 id="awayTitle">The Forge kept moving.</h3><p id="awayText"></p></div>
+          <button id="dismissAway" class="icon-btn">×</button>
         </div>
-      </article>
 
-      <div class="metric-row reveal">
-        <article class="metric"><span>LEVEL</span><strong id="todayLevel">1</strong><small id="todayLevelTitle">Rookie</small></article>
-        <article class="metric"><span>TOTAL XP</span><strong id="todayXp">0</strong><small>career</small></article>
-        <article class="metric"><span>STREAK</span><strong id="todayStreak">0</strong><small>active days</small></article>
-        <article class="metric"><span>PERFECT DAYS</span><strong id="todayPerfect">0</strong><small>5 / 5 boards</small></article>
-        <article class="metric"><span>CLIPS</span><strong id="todayClips">0</strong><small>proof vault</small></article>
+        <div class="home-grid">
+          <article class="panel live-event reveal">
+            <header class="panel-title"><div><small>LIVE ROTATION</small><h2>Forge Event</h2></div><span id="eventTimer" class="timer-chip">29:59</span></header>
+            <div id="eventCard" class="event-card"></div>
+          </article>
+          <article class="panel reveal">
+            <header class="panel-title"><div><small>DAILY PROGRESS</small><h2>Board Pulse</h2></div><b id="completionFraction">0/5</b></header>
+            <div id="homeQuestStrip" class="quest-strip"></div>
+            <div class="progress-track"><span id="dailyProgressBar"></span></div>
+            <p id="dailyProgressText" class="muted">Five quests remain.</p>
+          </article>
+        </div>
+
+        <div class="stats-grid reveal">
+          <div class="stat-card panel"><span>⚡</span><small>STREAK</small><b id="streakStat">0</b><em>DAYS</em></div>
+          <div class="stat-card panel"><span>✦</span><small>SPARKS</small><b id="sparksStat">0</b><em>BANKED</em></div>
+          <div class="stat-card panel"><span>◈</span><small>VRFS MASTERY</small><b id="vrfsMasteryStat">0</b><em>XP</em></div>
+          <div class="stat-card panel"><span>V</span><small>VAL MASTERY</small><b id="valMasteryStat">0</b><em>XP</em></div>
+        </div>
+
+        <article class="panel boss-preview reveal">
+          <header class="panel-title"><div><small>FEATURED CHALLENGE</small><h2>Boss Quest</h2></div><span class="boss-chip">DAILY</span></header>
+          <div id="bossPreview"></div>
+        </article>
+      </section>
+
+      <section id="page-board" class="page">
+        <header class="page-header reveal"><div><div class="eyebrow"><span></span> TODAY'S DROP</div><h1>DAILY BOARD</h1><p id="boardDate"></p></div><div class="board-meta"><div><small>COMPLETE</small><b id="boardComplete">0/5</b></div><div><small>RESET</small><b id="resetTimer">--:--:--</b></div></div></header>
+        <div id="questGrid" class="quest-grid"></div>
+        <article class="boss-zone panel reveal"><div class="boss-zone-glow"></div><div id="bossQuest"></div></article>
+        <div class="board-note reveal"><span>◆</span><p>Quest proof is stored on this device. Forge does not ask you to manually enter match stats or playtime.</p></div>
+      </section>
+
+      <section id="page-clips" class="page">
+        <header class="page-header reveal"><div><div class="eyebrow"><span></span> PROOF ARCHIVE</div><h1>CLIP LIBRARY</h1><p>Your completed quest proof, playable inside Forge.</p></div><div class="clip-tools"><input id="clipSearch" type="search" placeholder="Search clips…"><select id="clipFilter"><option value="all">All games</option><option value="vrfs">VRFS</option><option value="valorant">VALORANT</option></select></div></header>
+        <div id="clipGrid" class="clip-grid"></div>
+        <div id="emptyClips" class="empty-state panel"><span>▶</span><h3>No proof clips yet.</h3><p>Complete a quest with a clip or screenshot and it will appear here.</p><button class="btn primary" data-nav="board">GO TO BOARD</button></div>
+      </section>
+
+      <section id="page-progress" class="page">
+        <header class="page-header reveal"><div><div class="eyebrow"><span></span> LONG-TERM BUILD</div><h1>PROGRESSION</h1><p>Everything here advances from verified quest completions—no stat-entry chores.</p></div></header>
+        <div class="progress-hero panel reveal">
+          <div class="level-emblem"><span id="levelBig">1</span><small>LEVEL</small></div>
+          <div class="progress-hero-copy"><small id="rankName">UNFORGED</small><h2 id="xpLine">0 / 500 XP</h2><div class="progress-track thick"><span id="xpBar"></span></div><p id="nextUnlockText">Next reward at level 2.</p></div>
+        </div>
+        <div class="mastery-grid reveal">
+          <article class="mastery-card panel vrfs"><div class="mastery-icon">◈</div><div><small>VRFS MASTERY</small><h2 id="vrfsMastery">0</h2><p id="vrfsMasteryLevel">Initiate</p></div><div id="vrfsRing" class="mastery-ring"><span></span></div></article>
+          <article class="mastery-card panel valorant"><div class="mastery-icon">V</div><div><small>VALORANT MASTERY</small><h2 id="valMastery">0</h2><p id="valMasteryLevel">Initiate</p></div><div id="valRing" class="mastery-ring"><span></span></div></article>
+        </div>
+        <article class="panel reveal"><header class="panel-title"><div><small>MILESTONES</small><h2>Achievements</h2></div><b id="achievementCount">0/0</b></header><div id="achievementGrid" class="achievement-grid"></div></article>
+        <article class="panel reveal"><header class="panel-title"><div><small>RECENT HISTORY</small><h2>Board Archive</h2></div></header><div id="historyList" class="history-list"></div></article>
+      </section>
+
+      <section id="page-vault" class="page">
+        <header class="page-header reveal"><div><div class="eyebrow"><span></span> COSMETIC PROGRESSION</div><h1>THE VAULT</h1><p>Unlock titles and visual themes from levels, streaks, mastery, and achievements.</p></div></header>
+        <article class="panel reveal"><header class="panel-title"><div><small>IDENTITY</small><h2>Titles</h2></div><span id="activeTitle" class="active-pill">UNFORGED</span></header><div id="titleGrid" class="vault-grid"></div></article>
+        <article class="panel reveal"><header class="panel-title"><div><small>INTERFACE</small><h2>Forge Skins</h2></div><span id="activeTheme" class="active-pill">EMBER</span></header><div id="themeGrid" class="vault-grid themes"></div></article>
+        <article class="panel locked-social reveal"><div class="lock-icon">⌁</div><div><small>COMING LATER</small><h2>Rivals</h2><p>Friends, leaderboards, challenge boards, and head-to-head streaks stay locked for now. Forge remains private/solo.</p></div><span class="locked-chip">LOCKED</span></article>
+      </section>
+
+      <section id="page-settings" class="page">
+        <header class="page-header reveal"><div><div class="eyebrow"><span></span> SYSTEM CONTROL</div><h1>SETTINGS</h1><p>Keep Forge fast, private, and portable.</p></div></header>
+        <div class="settings-grid">
+          <article class="panel reveal setting-card"><h2>Motion</h2><p>Opening sequence, ambient sparks, page transitions, and card motion.</p><label class="switch-row"><span>Reduced motion</span><input id="reducedMotion" type="checkbox"><i></i></label></article>
+          <article class="panel reveal setting-card"><h2>Daily Mix</h2><p>Forge always uses both games. Choose which one gets the extra quest when the split is 3/2.</p><div class="segmented"><button id="mixAuto" data-mix="auto">AUTO</button><button id="mixVrfs" data-mix="vrfs">VRFS</button><button id="mixVal" data-mix="valorant">VAL</button></div></article>
+          <article class="panel reveal setting-card"><h2>Data</h2><p>Your progress and metadata live in local storage. Proof clips live in IndexedDB on this device.</p><div class="setting-actions"><button id="exportBtn" class="btn ghost">EXPORT SAVE</button><button id="importBtn" class="btn ghost">IMPORT SAVE</button><input id="importInput" type="file" accept="application/json" hidden></div></article>
+          <article class="panel reveal setting-card danger-card"><h2>Reset</h2><p>Erase progression and quest history. Clip files can be erased separately.</p><div class="setting-actions"><button id="resetProgressBtn" class="btn danger">RESET PROGRESS</button><button id="clearClipsBtn" class="btn danger ghost-danger">CLEAR CLIPS</button></div></article>
+        </div>
+      </section>
+    </main>
+
+    <div id="toastStack" class="toast-stack"></div>
+
+    <div id="questModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal panel">
+        <button id="questModalClose" class="icon-btn modal-close">×</button>
+        <div id="questModalBody"></div>
       </div>
+    </div>
 
-      <div class="section-header reveal">
-        <div><div class="eyebrow">TODAY'S FIVE</div><h2>Quest Board</h2><p id="boardSubline">Generated for today.</p></div>
-        <button class="secondary-btn" id="rerollBoardBtn"><span>↻</span> Reroll Board</button>
-      </div>
-      <div class="quest-board" id="questBoard"></div>
-
-      <article class="proof-rule reveal">
-        <div class="proof-rule-icon"><span>▶</span></div>
-        <div><div class="eyebrow">FORGE RULE #01</div><h3>Clip it or it didn't count.</h3><p>No session logging. No typing kills, goals, saves, assists, or scores. Attach the clip and FORGE does the rest.</p></div>
-        <div class="proof-rule-stat"><strong id="proofRuleCount">0</strong><span>QUESTS PROVEN</span></div>
-      </article>
-    </section>
-
-    <section class="view" id="clipsView">
-      <div class="view-hero compact reveal"><div><div class="eyebrow">PROOF VAULT</div><h2>Clip Library</h2><p>Every quest you completed lives here.</p></div><div class="view-hero-stat"><strong id="clipHeroCount">0</strong><span>CLIPS</span></div></div>
-      <div class="clip-toolbar reveal">
-        <label class="search-box"><span>⌕</span><input id="clipSearch" placeholder="Search quests, notes, games..."></label>
-        <div class="segmented" id="clipGameFilter"><button class="active" data-clip-game="all">All</button><button data-clip-game="VALORANT">VALORANT</button><button data-clip-game="VRFS">VRFS</button></div>
-        <select id="clipSort"><option value="newest">Newest</option><option value="oldest">Oldest</option><option value="favorites">Favorites first</option></select>
-      </div>
-      <div class="clip-grid" id="clipGrid"></div>
-    </section>
-
-    <section class="view" id="progressView">
-      <article class="career-hero reveal">
-        <div class="career-ring"><div><span>LEVEL</span><strong id="careerLevel">1</strong><small id="careerPrestige">NO PRESTIGE</small></div></div>
-        <div class="career-copy"><div class="eyebrow">PRIVATE CAREER</div><h2 id="careerName">Player One</h2><p id="careerTitleLine">Rookie // built from proof.</p><div class="career-xp"><div><span id="careerXpText">0 / 100 XP</span><b id="careerXpPct">0%</b></div><div class="progress-track big"><i id="careerXpBar"></i></div></div></div>
-        <div class="career-score"><span>FORGE SCORE</span><strong id="forgeScore">0</strong><small id="careerRank">INITIATE</small></div>
-      </article>
-
-      <div class="two-col">
-        <article class="panel reveal"><div class="panel-heading"><div><div class="eyebrow">CAREER TOTALS</div><h3>Numbers</h3></div></div><div class="stat-stack" id="careerStats"></div></article>
-        <article class="panel reveal"><div class="panel-heading"><div><div class="eyebrow">GAME MASTERY</div><h3>Two Games</h3></div></div><div id="masteryCards" class="mastery-cards"></div></article>
-      </div>
-      <article class="panel reveal margin-top"><div class="panel-heading"><div><div class="eyebrow">LEVEL ROAD</div><h3>Next Unlocks</h3></div><button class="text-btn" data-view-jump="collection">Open collection →</button></div><div class="level-road" id="levelRoad"></div></article>
-      <article class="panel reveal margin-top"><div class="panel-heading"><div><div class="eyebrow">LAST 14 DAYS</div><h3>Quest Heat</h3></div><span class="subtle" id="heatSummary">0 quests</span></div><div class="heat-strip" id="heatStrip"></div></article>
-    </section>
-
-    <section class="view" id="achievementsView">
-      <div class="view-hero compact reveal"><div><div class="eyebrow">PASSIVE MILESTONES</div><h2>Achievements</h2><p>You never manually claim these. They unlock from what you actually clip.</p></div><div class="view-hero-stat"><strong id="achievementUnlockedCount">0</strong><span>UNLOCKED</span></div></div>
-      <div class="achievement-summary reveal"><div class="achievement-progress"><div><span id="achievementProgressText">0 / 0</span><b id="achievementProgressPct">0%</b></div><div class="progress-track big"><i id="achievementProgressBar"></i></div></div><div class="segmented" id="achievementFilters"><button class="active" data-achievement-filter="all">All</button><button data-achievement-filter="unlocked">Unlocked</button><button data-achievement-filter="locked">Locked</button></div></div>
-      <div class="achievement-grid" id="achievementGrid"></div>
-    </section>
-
-    <section class="view" id="historyView">
-      <div class="view-hero compact reveal"><div><div class="eyebrow">EVERY DAILY RUN</div><h2>History</h2><p>Old boards, proof, XP, and perfect days.</p></div><div class="view-hero-stat"><strong id="historyDayCount">0</strong><span>DAYS</span></div></div>
-      <div class="history-toolbar reveal"><div class="segmented" id="historyFilter"><button class="active" data-history-filter="all">All</button><button data-history-filter="perfect">Perfect</button><button data-history-filter="partial">Partial</button></div></div>
-      <div class="history-list" id="historyList"></div>
-    </section>
-
-    <section class="view" id="analyticsView">
-      <div class="view-hero compact reveal"><div><div class="eyebrow">AUTOMATIC ONLY</div><h2>Analytics</h2><p>No manual stats. Everything here comes from your completed quests.</p></div><div class="view-hero-stat"><strong id="analyticsQuestCount">0</strong><span>QUESTS</span></div></div>
-      <div class="two-col">
-        <article class="panel reveal"><div class="panel-heading"><div><div class="eyebrow">GAME SPLIT</div><h3>VAL vs VRFS</h3></div></div><canvas id="gameSplitCanvas" width="560" height="270"></canvas><div id="gameSplitLegend" class="chart-legend"></div></article>
-        <article class="panel reveal"><div class="panel-heading"><div><div class="eyebrow">30 DAY OUTPUT</div><h3>Quests per day</h3></div></div><canvas id="outputCanvas" width="560" height="270"></canvas></article>
-        <article class="panel reveal"><div class="panel-heading"><div><div class="eyebrow">DIFFICULTY</div><h3>What you finish</h3></div></div><div class="difficulty-bars" id="difficultyBars"></div></article>
-        <article class="panel reveal"><div class="panel-heading"><div><div class="eyebrow">QUEST TYPES</div><h3>Top categories</h3></div></div><div class="category-list" id="categoryList"></div></article>
-      </div>
-      <article class="panel reveal margin-top"><div class="panel-heading"><div><div class="eyebrow">CALENDAR</div><h3>90-Day Activity</h3></div></div><div class="calendar-heat" id="calendarHeat"></div></article>
-    </section>
-
-    <section class="view" id="collectionView">
-      <div class="view-hero compact reveal"><div><div class="eyebrow">ACCOUNT COSMETICS</div><h2>Collection</h2><p>Levels unlock titles, marks, frames, and accents automatically.</p></div><div class="view-hero-stat"><strong id="collectionCount">0</strong><span>OWNED</span></div></div>
-      <div class="collection-current reveal"><div><span>ACTIVE TITLE</span><strong id="activeTitleDisplay">Rookie</strong></div><div><span>ACTIVE ACCENT</span><strong id="activeAccentDisplay">Violet Core</strong></div><button class="secondary-btn" id="resetCosmeticsBtn">Reset Look</button></div>
-      <div class="collection-tabs reveal" id="collectionTabs"><button class="active" data-collection-filter="all">All</button><button data-collection-filter="title">Titles</button><button data-collection-filter="accent">Accents</button><button data-collection-filter="frame">Frames</button><button data-collection-filter="badge">Marks</button></div>
-      <div class="collection-grid" id="collectionGrid"></div>
-    </section>
-
-    <section class="view" id="settingsView">
-      <div class="settings-grid">
-        <article class="panel reveal"><div class="eyebrow">PROFILE</div><h3>Identity</h3><label class="field"><span>DISPLAY NAME</span><input id="nameInput" maxlength="40"></label><button class="primary-btn" id="saveProfileBtn">Save Profile</button></article>
-        <article class="panel reveal"><div class="eyebrow">QUEST ENGINE</div><h3>Daily Mix</h3><label class="field"><span>GAME MIX</span><select id="mixSelect"><option value="balanced">Balanced 3 / 2</option><option value="valorant">More VALORANT</option><option value="vrfs">More VRFS</option><option value="random">Wild Mix</option></select></label><label class="field"><span>DIFFICULTY BIAS</span><select id="difficultySelect"><option value="mixed">Mixed</option><option value="chill">Chill</option><option value="hard">Harder</option></select></label><button class="primary-btn" id="saveQuestSettingsBtn">Save Quest Settings</button></article>
-        <article class="panel reveal"><div class="eyebrow">EXPERIENCE</div><h3>Look & Feel</h3><div class="toggle-row"><div><strong>Motion</strong><span>Animations, card movement, bursts.</span></div><button class="toggle" id="motionToggle"><i></i></button></div><div class="toggle-row"><div><strong>UI Sounds</strong><span>Small generated sounds. No audio files.</span></div><button class="toggle" id="soundToggle"><i></i></button></div></article>
-        <article class="panel reveal"><div class="eyebrow">BACKUP</div><h3>Export Progress</h3><p class="subtle">Exports boards, XP, settings, and clip metadata. Video/image files remain in this browser.</p><button class="primary-btn" id="exportBtn">Export JSON Backup</button></article>
-        <article class="panel reveal"><div class="eyebrow">RESTORE</div><h3>Import Progress</h3><p class="subtle">Restore a FORGE v2 or v3 backup.</p><label class="secondary-btn file-label">Choose Backup<input id="importInput" type="file" accept="application/json" hidden></label></article>
-        <article class="panel danger-panel reveal"><div class="eyebrow">DANGER ZONE</div><h3>Reset Everything</h3><p class="subtle">Deletes progression and local clip blobs for this site.</p><button class="danger-btn" id="resetBtn">Reset FORGE</button></article>
-      </div>
-    </section>
-  </main>
-
-  <div class="mobile-nav">
-    <button class="active" data-view="today"><span>✦</span><b>Today</b></button>
-    <button data-view="clips"><span>▶</span><b>Clips</b></button>
-    <button data-view="progress"><span>⌁</span><b>Progress</b></button>
-    <button data-view="history"><span>◫</span><b>History</b></button>
-    <button data-view="settings"><span>⚙</span><b>More</b></button>
-  </div>
-
-  <div class="modal-backdrop hidden" id="submitBackdrop">
-    <div class="modal">
-      <div class="modal-head"><div><div class="eyebrow">COMPLETE WITH PROOF</div><h3 id="submitTitle">Submit Clip</h3></div><button class="round-btn" id="closeSubmit">×</button></div>
-      <div class="modal-body">
-        <div class="submit-quest" id="submitQuest"></div>
-        <label class="clip-drop" id="clipDrop"><input id="clipInput" type="file" accept="video/*,image/*" hidden><div class="clip-drop-icon">▶</div><strong id="clipDropTitle">Choose your clip</strong><span id="clipDropSub">Video or screenshot. Stored locally on this device.</span></label>
-        <div class="selected-preview hidden" id="selectedPreview"></div>
-        <label class="field"><span>OPTIONAL NOTE</span><input id="clipNote" maxlength="120" placeholder="What made this one good?"></label>
-        <div class="modal-actions"><button class="secondary-btn" id="cancelSubmit">Cancel</button><button class="primary-btn" id="completeQuestBtn" disabled><span>✓</span> Complete Quest</button></div>
+    <div id="clipModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+      <div class="modal panel clip-modal">
+        <button id="clipModalClose" class="icon-btn modal-close">×</button>
+        <div id="clipModalBody"></div>
       </div>
     </div>
   </div>
 
-  <div class="modal-backdrop hidden" id="playerBackdrop">
-    <div class="modal player-modal">
-      <div class="modal-head"><div><div class="eyebrow">QUEST PROOF</div><h3 id="playerTitle">Clip</h3></div><button class="round-btn" id="closePlayer">×</button></div>
-      <div class="player-stage" id="playerStage"></div>
-      <div class="player-info" id="playerInfo"></div>
-    </div>
-  </div>
-
-  <div class="modal-backdrop hidden" id="levelBackdrop">
-    <div class="level-modal"><div class="level-rays"></div><div class="eyebrow">ACCOUNT UPGRADED</div><h2>LEVEL <span id="levelUpNumber">2</span></h2><p id="levelUpReward">New reward unlocked.</p><button class="primary-btn" id="closeLevelUp">Continue</button></div>
-  </div>
-
-  <div class="command-backdrop hidden" id="commandBackdrop">
-    <div class="command-palette"><div class="command-input"><span>⌕</span><input id="commandInput" placeholder="Jump anywhere..."><kbd>ESC</kbd></div><div class="command-results" id="commandResults"></div></div>
-  </div>
-
-  <div class="toast-wrap" id="toastWrap"></div>
-  <div class="confetti-layer" id="confettiLayer"></div>
-
-  <script src="quest-bank-valorant.js"></script>
-  <script src="quest-bank-vrfs.js"></script>
-  <script src="rewards.js"></script>
-  <script src="forge-core.js"></script>
-  <script src="forge-clips.js"></script>
-  <script src="forge-effects.js"></script>
-  <script src="forge-ui.js"></script>
-  <script src="app.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

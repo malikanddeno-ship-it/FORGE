@@ -1,0 +1,9 @@
+{
+  "name":"FORGE // OVERDRIVE",
+  "short_name":"FORGE",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#07090d",
+  "theme_color":"#ff6a2b",
+  "description":"Daily VRFS and VALORANT quest progression with clip proof."
+}
