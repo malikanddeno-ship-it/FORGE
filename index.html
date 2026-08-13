@@ -1,356 +1,222 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <meta name="theme-color" content="#0a0a0d"/>
-  <title>FORGE // SOLO</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#090a0e">
+  <title>FORGE // Daily</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="app" class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-mark">F</div>
-        <div class="brand-copy">
-          <strong>FORGE</strong>
-          <span>SOLO // 01</span>
-        </div>
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">F</div>
+      <div><strong>FORGE</strong><small>DAILY</small></div>
+    </div>
+
+    <nav id="nav">
+      <button class="nav active" data-view="today"><span>✦</span><b>Today</b></button>
+      <button class="nav" data-view="clips"><span>▶</span><b>Clips</b></button>
+      <button class="nav" data-view="progress"><span>⌁</span><b>Progress</b></button>
+      <button class="nav" data-view="history"><span>◫</span><b>History</b></button>
+      <button class="nav" data-view="settings"><span>⚙</span><b>Settings</b></button>
+    </nav>
+
+    <div class="side-bottom">
+      <div class="mini-level">
+        <div><span>LEVEL</span><strong id="sideLevel">1</strong></div>
+        <div class="bar"><i id="sideBar"></i></div>
+        <small id="sideXp">0 / 100 XP</small>
       </div>
+    </div>
+  </aside>
 
-      <nav class="nav" id="nav">
-        <button class="nav-btn active" data-view="home"><span>◈</span><b>Home</b></button>
-        <button class="nav-btn" data-view="games"><span>▦</span><b>Games</b></button>
-        <button class="nav-btn" data-view="quests"><span>✦</span><b>Quests</b></button>
-        <button class="nav-btn" data-view="career"><span>⌁</span><b>Career</b></button>
-        <button class="nav-btn" data-view="skills"><span>⌘</span><b>Skill Tree</b></button>
-        <button class="nav-btn" data-view="clips"><span>▶</span><b>Clips</b></button>
-        <button class="nav-btn" data-view="records"><span>◆</span><b>Records</b></button>
-        <button class="nav-btn" data-view="vault"><span>▣</span><b>Vault</b></button>
-        <button class="nav-btn" data-view="seasons"><span>◐</span><b>Seasons</b></button>
-        <button class="nav-btn" data-view="timeline"><span>⋯</span><b>Timeline</b></button>
-      </nav>
-
-      <div class="sidebar-bottom">
-        <div class="xp-mini">
-          <div class="xp-mini-top"><span>LVL <b id="miniLevel">1</b></span><span id="miniXpText">0 / 100</span></div>
-          <div class="xp-bar"><i id="miniXpBar"></i></div>
-        </div>
-        <button class="nav-btn" data-view="settings"><span>⚙</span><b>Settings</b></button>
+  <main>
+    <header class="top">
+      <div>
+        <div class="kicker" id="pageKicker">5 QUESTS. ONE DAY.</div>
+        <h1 id="pageTitle">Today</h1>
       </div>
-    </aside>
+      <div class="top-actions">
+        <div class="day-pill"><span id="dayLabel">TODAY</span><b id="countdown">--:--:--</b></div>
+        <button class="icon" id="themeBtn">◐</button>
+      </div>
+    </header>
 
-    <main class="main">
-      <header class="topbar">
+    <section id="todayView" class="view active">
+      <article class="hero">
         <div>
-          <div class="kicker" id="pageKicker">PERSONAL GAMING UNIVERSE</div>
-          <h1 id="pageTitle">Command Deck</h1>
+          <div class="hero-badge">DAILY RUN</div>
+          <h2 id="heroDate">Today</h2>
+          <p>Five random quests. VALORANT or VRFS. Your only job is to get the clip.</p>
         </div>
-        <div class="top-actions">
-          <button class="icon-btn" id="openCommand">⌘K</button>
-          <button class="icon-btn" id="themeBtn">◐</button>
-          <button class="primary" id="quickLogBtn">+ Quick Log</button>
+        <div class="daily-score">
+          <span>DONE TODAY</span>
+          <strong><b id="doneCount">0</b>/5</strong>
+          <small id="dailyRewardText">Complete all 5 for +250 bonus XP</small>
         </div>
-      </header>
+      </article>
 
-      <!-- HOME -->
-      <section class="view active" id="homeView">
-        <div class="hero">
-          <div class="hero-main">
-            <div class="hero-chip">SOLO PROFILE</div>
-            <h2 id="heroName">Player One</h2>
-            <p id="heroTagline">One player. Every game. One absurdly overbuilt career.</p>
-            <div class="hero-stats">
-              <div><span>LEVEL</span><strong id="heroLevel">1</strong></div>
-              <div><span>TOTAL XP</span><strong id="heroXp">0</strong></div>
-              <div><span>GAMES</span><strong id="heroGames">0</strong></div>
-              <div><span>QUESTS DONE</span><strong id="heroQuests">0</strong></div>
-            </div>
-          </div>
-          <div class="rank-orb">
-            <div class="rank-orb-inner">
-              <span>CURRENT TIER</span>
-              <strong id="heroTier">Rookie</strong>
-              <small id="heroTierSub">0 career score</small>
-            </div>
-          </div>
-        </div>
-
-        <div class="grid grid-4 stat-strip">
-          <article class="stat-panel"><span>Sessions</span><strong id="homeSessions">0</strong><small>all time</small></article>
-          <article class="stat-panel"><span>Playtime</span><strong id="homePlaytime">0h</strong><small>logged</small></article>
-          <article class="stat-panel"><span>Achievements</span><strong id="homeAchievements">0</strong><small>unlocked</small></article>
-          <article class="stat-panel"><span>Records</span><strong id="homeRecords">0</strong><small>personal bests</small></article>
-        </div>
-
-        <div class="grid home-grid">
-          <article class="panel span-2">
-            <div class="panel-head">
-              <div><div class="kicker">ACTIVE MISSIONS</div><h3>Quest Board</h3></div>
-              <button class="link-btn" data-goto="quests">Open board →</button>
-            </div>
-            <div id="homeQuestList" class="stack empty">No active quests.</div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-head">
-              <div><div class="kicker">CURRENT GAME</div><h3>Now Playing</h3></div>
-              <button class="link-btn" data-goto="games">Library →</button>
-            </div>
-            <div id="nowPlaying" class="now-playing empty">No game selected.</div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-head">
-              <div><div class="kicker">SEASON</div><h3>Progress</h3></div>
-              <button class="link-btn" data-goto="seasons">Open season →</button>
-            </div>
-            <div class="season-mini">
-              <div class="season-ring"><strong id="seasonLevelMini">1</strong><span>LVL</span></div>
-              <div class="season-mini-copy">
-                <strong id="seasonNameMini">Season Zero</strong>
-                <span id="seasonXpMini">0 / 250 XP</span>
-                <div class="xp-bar"><i id="seasonBarMini"></i></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-head">
-              <div><div class="kicker">RECENT</div><h3>Timeline</h3></div>
-              <button class="link-btn" data-goto="timeline">Everything →</button>
-            </div>
-            <div id="homeTimeline" class="timeline-list empty">Nothing has happened yet.</div>
-          </article>
-
-          <article class="panel span-2">
-            <div class="panel-head">
-              <div><div class="kicker">CAREER HEATMAP</div><h3>Last 35 Days</h3></div>
-              <span class="muted">sessions logged</span>
-            </div>
-            <div id="heatmap" class="heatmap"></div>
-          </article>
-        </div>
-      </section>
-
-      <!-- GAMES -->
-      <section class="view" id="gamesView">
-        <div class="toolbar">
-          <div class="search"><span>⌕</span><input id="gameSearch" placeholder="Search your game library"></div>
-          <select id="gameFilter">
-            <option value="all">All games</option>
-            <option value="playing">Playing</option>
-            <option value="backlog">Backlog</option>
-            <option value="completed">Completed</option>
-            <option value="dropped">Dropped</option>
-          </select>
-          <button class="primary" id="addGameBtn">+ Add Game</button>
-        </div>
-        <div id="gameGrid" class="game-grid"></div>
-      </section>
-
-      <!-- QUESTS -->
-      <section class="view" id="questsView">
-        <div class="quest-header">
-          <div>
-            <div class="kicker">PROGRESSION ENGINE</div>
-            <h2>Your Quest Board</h2>
-            <p class="muted">Make your own challenges. Finish them. Get XP. Level the whole account.</p>
-          </div>
-          <button class="primary" id="addQuestBtn">+ Create Quest</button>
-        </div>
-
-        <div class="tabs" id="questTabs">
-          <button class="tab active" data-qtab="active">Active</button>
-          <button class="tab" data-qtab="daily">Daily</button>
-          <button class="tab" data-qtab="weekly">Weekly</button>
-          <button class="tab" data-qtab="completed">Completed</button>
-        </div>
-        <div id="questGrid" class="quest-grid"></div>
-      </section>
-
-      <!-- CAREER -->
-      <section class="view" id="careerView">
-        <div class="career-banner">
-          <div>
-            <div class="kicker">CAREER PROFILE</div>
-            <h2 id="careerName">Player One</h2>
-            <p class="muted">Your private record across every game you care about.</p>
-          </div>
-          <div class="career-score">
-            <span>CAREER SCORE</span>
-            <strong id="careerScore">0</strong>
-          </div>
-        </div>
-
-        <div class="grid grid-3">
-          <article class="panel">
-            <div class="kicker">ACCOUNT LEVEL</div>
-            <div class="big-number" id="careerLevel">1</div>
-            <div class="xp-bar large"><i id="careerLevelBar"></i></div>
-            <div class="muted" id="careerLevelText">0 / 100 XP</div>
-          </article>
-          <article class="panel">
-            <div class="kicker">FAVORITE GAME</div>
-            <div class="big-label" id="careerFavorite">None yet</div>
-            <div class="muted" id="careerFavoriteSub">Log sessions to determine</div>
-          </article>
-          <article class="panel">
-            <div class="kicker">LONGEST SESSION</div>
-            <div class="big-label" id="careerLongest">0m</div>
-            <div class="muted" id="careerLongestSub">No sessions logged</div>
-          </article>
-        </div>
-
-        <div class="grid career-grid">
-          <article class="panel span-2">
-            <div class="panel-head"><div><div class="kicker">GAME MASTERY</div><h3>Per-Game Progress</h3></div></div>
-            <div id="masteryList" class="mastery-list empty">Add games to begin.</div>
-          </article>
-          <article class="panel">
-            <div class="panel-head"><div><div class="kicker">MILESTONES</div><h3>Achievements</h3></div></div>
-            <div id="achievementList" class="achievement-list"></div>
-          </article>
-        </div>
-      </section>
-
-      <!-- SKILLS -->
-      <section class="view" id="skillsView">
-        <div class="skill-header">
-          <div>
-            <div class="kicker">META PROGRESSION</div>
-            <h2>Skill Tree</h2>
-            <p class="muted">Spend skill points earned from leveling up.</p>
-          </div>
-          <div class="skill-points"><span>AVAILABLE</span><strong id="skillPoints">0</strong><small>skill points</small></div>
-        </div>
-        <div id="skillTree" class="skill-tree"></div>
-      </section>
-
-      <!-- CLIPS -->
-      <section class="view" id="clipsView">
-        <div class="toolbar">
-          <div class="search"><span>⌕</span><input id="clipSearch" placeholder="Search clips"></div>
-          <select id="clipGameFilter"><option value="all">All games</option></select>
-          <button class="primary" id="addClipBtn">+ Add Clip</button>
-        </div>
-        <div id="clipGrid" class="clip-grid"></div>
-      </section>
-
-      <!-- RECORDS -->
-      <section class="view" id="recordsView">
-        <div class="records-top">
-          <div><div class="kicker">PERSONAL BESTS</div><h2>Record Book</h2></div>
-          <button class="primary" id="addRecordBtn">+ Add Record</button>
-        </div>
-        <div id="recordGrid" class="record-grid"></div>
-      </section>
-
-      <!-- VAULT -->
-      <section class="view" id="vaultView">
-        <div class="vault-head">
-          <div>
-            <div class="kicker">COLLECTIONS</div>
-            <h2>The Vault</h2>
-            <p class="muted">Keep screenshots, notes, builds, loadouts, ideas, links, and weird game stuff.</p>
-          </div>
-          <button class="primary" id="addVaultBtn">+ Vault Item</button>
-        </div>
-        <div class="tabs" id="vaultTabs">
-          <button class="tab active" data-vtab="all">All</button>
-          <button class="tab" data-vtab="loadout">Loadouts</button>
-          <button class="tab" data-vtab="build">Builds</button>
-          <button class="tab" data-vtab="note">Notes</button>
-          <button class="tab" data-vtab="link">Links</button>
-          <button class="tab" data-vtab="idea">Ideas</button>
-        </div>
-        <div id="vaultGrid" class="vault-grid"></div>
-      </section>
-
-      <!-- SEASONS -->
-      <section class="view" id="seasonsView">
-        <div class="season-hero">
-          <div>
-            <div class="kicker">PRIVATE BATTLE PASS</div>
-            <h2 id="seasonTitle">Season Zero</h2>
-            <p id="seasonSubtitle">Your first personal season.</p>
-          </div>
-          <button class="primary" id="editSeasonBtn">Edit Season</button>
-        </div>
-        <div class="season-progress-panel panel">
-          <div class="season-level-large"><span>SEASON LEVEL</span><strong id="seasonLevelLarge">1</strong></div>
-          <div class="season-progress-copy">
-            <div class="season-progress-top"><span id="seasonXpLarge">0 / 250 XP</span><span id="seasonPct">0%</span></div>
-            <div class="xp-bar huge"><i id="seasonBarLarge"></i></div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="panel-head"><div><div class="kicker">REWARD TRACK</div><h3>Season Levels</h3></div></div>
-          <div id="seasonTrack" class="season-track"></div>
-        </div>
-      </section>
-
-      <!-- TIMELINE -->
-      <section class="view" id="timelineView">
-        <div class="timeline-head">
-          <div><div class="kicker">EVERYTHING YOU'VE DONE</div><h2>Career Timeline</h2></div>
-          <button class="ghost" id="clearTimelineBtn">Clear Timeline</button>
-        </div>
-        <div id="timelineFull" class="timeline-full"></div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section class="view" id="settingsView">
-        <div class="settings-grid">
-          <article class="panel">
-            <div class="kicker">PROFILE</div><h3>Identity</h3>
-            <div class="field"><label>Display name</label><input id="settingsName"></div>
-            <div class="field"><label>Tagline</label><input id="settingsTagline"></div>
-            <button class="primary" id="saveProfileBtn">Save Profile</button>
-          </article>
-          <article class="panel">
-            <div class="kicker">BACKUP</div><h3>Export Everything</h3>
-            <p class="muted">Download your entire FORGE universe as one JSON backup.</p>
-            <button class="primary" id="exportBtn">Export Backup</button>
-          </article>
-          <article class="panel">
-            <div class="kicker">RESTORE</div><h3>Import Backup</h3>
-            <p class="muted">Move FORGE data between devices.</p>
-            <label class="ghost file-label">Choose Backup<input hidden type="file" id="importInput" accept="application/json"></label>
-          </article>
-          <article class="panel danger-panel">
-            <div class="kicker">DANGER ZONE</div><h3>Reset FORGE</h3>
-            <p class="muted">Deletes all local data from this browser.</p>
-            <button class="danger" id="resetBtn">Reset Everything</button>
-          </article>
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- MODAL -->
-  <div id="modalBackdrop" class="backdrop hidden">
-    <div class="modal">
-      <div class="modal-head">
-        <div><div class="kicker" id="modalKicker">CREATE</div><h3 id="modalTitle">New Item</h3></div>
-        <button class="icon-btn" id="closeModalBtn">×</button>
+      <div class="today-strip">
+        <article><span>ACCOUNT LEVEL</span><strong id="homeLevel">1</strong></article>
+        <article><span>TOTAL XP</span><strong id="homeXp">0</strong></article>
+        <article><span>DAILY STREAK</span><strong id="homeStreak">0</strong><small>days</small></article>
+        <article><span>CLIPS SAVED</span><strong id="homeClips">0</strong></article>
       </div>
-      <div id="modalBody"></div>
+
+      <div class="section-head">
+        <div><div class="kicker">TODAY'S BOARD</div><h3>Your 5 quests</h3></div>
+        <button class="ghost" id="rerollBtn">↻ Reroll Board</button>
+      </div>
+
+      <div id="questBoard" class="quest-board"></div>
+
+      <article class="panel rule-panel">
+        <div class="rule-icon">▶</div>
+        <div>
+          <div class="kicker">THE ONLY RULE</div>
+          <h3>No typing stats. No manual proof.</h3>
+          <p>Complete a quest by attaching the clip that shows it. FORGE stores the clip on this device and marks that quest complete.</p>
+        </div>
+      </article>
+    </section>
+
+    <section id="clipsView" class="view">
+      <div class="section-head">
+        <div><div class="kicker">YOUR PROOF VAULT</div><h2>Clip Library</h2></div>
+        <div class="filters">
+          <button class="filter active" data-clip-filter="all">All</button>
+          <button class="filter" data-clip-filter="VALORANT">VALORANT</button>
+          <button class="filter" data-clip-filter="VRFS">VRFS</button>
+        </div>
+      </div>
+      <div id="clipGrid" class="clip-grid"></div>
+    </section>
+
+    <section id="progressView" class="view">
+      <article class="profile-card">
+        <div class="rank-ring"><div><span>LEVEL</span><strong id="progressLevel">1</strong></div></div>
+        <div class="profile-copy">
+          <div class="kicker">FORGE CAREER</div>
+          <h2 id="profileName">Player One</h2>
+          <p>Built entirely from completed quests and the clips behind them.</p>
+          <div class="big-progress">
+            <div class="progress-top"><span id="progressXpText">0 / 100 XP</span><span id="progressPct">0%</span></div>
+            <div class="bar big"><i id="progressBar"></i></div>
+          </div>
+        </div>
+      </article>
+
+      <div class="progress-grid">
+        <article class="panel">
+          <div class="kicker">CAREER</div><h3>Stats</h3>
+          <div class="stat-list">
+            <div><span>Total quests</span><strong id="statQuests">0</strong></div>
+            <div><span>VALORANT quests</span><strong id="statVal">0</strong></div>
+            <div><span>VRFS quests</span><strong id="statVrfs">0</strong></div>
+            <div><span>Perfect days</span><strong id="statPerfect">0</strong></div>
+            <div><span>Longest streak</span><strong id="statLongest">0</strong></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="kicker">TITLES</div><h3>Unlocked</h3>
+          <div id="titleList" class="title-list"></div>
+        </article>
+
+        <article class="panel wide">
+          <div class="kicker">LEVEL ROAD</div><h3>Upcoming unlocks</h3>
+          <div id="levelRoad" class="level-road"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="historyView" class="view">
+      <div class="section-head">
+        <div><div class="kicker">PAST RUNS</div><h2>Daily History</h2></div>
+      </div>
+      <div id="historyList" class="history-list"></div>
+    </section>
+
+    <section id="settingsView" class="view">
+      <div class="settings-grid">
+        <article class="panel">
+          <div class="kicker">PROFILE</div><h3>Your name</h3>
+          <label class="field"><span>DISPLAY NAME</span><input id="nameInput" maxlength="40"></label>
+          <button class="primary" id="saveNameBtn">Save</button>
+        </article>
+
+        <article class="panel">
+          <div class="kicker">QUEST MIX</div><h3>Daily balance</h3>
+          <p class="muted">FORGE always creates 5 quests. Choose how often each game should appear.</p>
+          <label class="field"><span>PREFERENCE</span>
+            <select id="mixSelect">
+              <option value="balanced">Balanced</option>
+              <option value="valorant">More VALORANT</option>
+              <option value="vrfs">More VRFS</option>
+              <option value="random">Fully Random</option>
+            </select>
+          </label>
+          <button class="primary" id="saveMixBtn">Save Mix</button>
+        </article>
+
+        <article class="panel">
+          <div class="kicker">BACKUP</div><h3>Export</h3>
+          <p class="muted">Backs up your progression, quest history, and clip metadata. Video files themselves stay on this device.</p>
+          <button class="primary" id="exportBtn">Export Backup</button>
+        </article>
+
+        <article class="panel">
+          <div class="kicker">RESTORE</div><h3>Import</h3>
+          <p class="muted">Restore progression and quest history from a FORGE backup.</p>
+          <label class="ghost file-label">Choose Backup<input type="file" id="importInput" accept="application/json" hidden></label>
+        </article>
+
+        <article class="panel danger-panel">
+          <div class="kicker">RESET</div><h3>Clear FORGE</h3>
+          <p class="muted">Deletes progression and locally stored quest clips.</p>
+          <button class="danger" id="resetBtn">Reset Everything</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="submitBackdrop" class="backdrop hidden">
+    <div class="modal">
+      <div class="modal-top">
+        <div><div class="kicker">COMPLETE WITH PROOF</div><h3 id="submitTitle">Submit Clip</h3></div>
+        <button class="icon" id="closeSubmit">×</button>
+      </div>
+      <div class="submit-body">
+        <div id="submitQuestText" class="submit-quest"></div>
+        <label class="drop-zone" id="dropZone">
+          <input type="file" id="clipInput" accept="video/*,image/*" hidden>
+          <div class="drop-icon">▶</div>
+          <strong id="dropTitle">Choose your clip</strong>
+          <span id="dropSubtitle">Video or screenshot from this quest</span>
+        </label>
+        <label class="field"><span>OPTIONAL NOTE</span><input id="clipNote" maxlength="120" placeholder="Anything you want to remember"></label>
+        <div class="modal-actions">
+          <button class="ghost" id="cancelSubmit">Cancel</button>
+          <button class="primary" id="finishSubmit" disabled>Complete Quest</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- COMMAND PALETTE -->
-  <div id="commandBackdrop" class="backdrop hidden">
-    <div class="command">
-      <div class="command-input"><span>⌕</span><input id="commandInput" placeholder="Jump anywhere or create something..."><kbd>ESC</kbd></div>
-      <div id="commandResults" class="command-results"></div>
+  <div id="playerBackdrop" class="backdrop hidden">
+    <div class="player-modal">
+      <div class="modal-top">
+        <div><div class="kicker">QUEST PROOF</div><h3 id="playerTitle">Clip</h3></div>
+        <button class="icon" id="closePlayer">×</button>
+      </div>
+      <div id="playerBody" class="player-body"></div>
     </div>
   </div>
 
   <div id="toastWrap" class="toast-wrap"></div>
-
   <script src="app.js"></script>
 </body>
 </html>

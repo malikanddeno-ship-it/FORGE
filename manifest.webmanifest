@@ -1,10 +1,10 @@
 {
-  "name": "FORGE SOLO",
+  "name": "FORGE Daily",
   "short_name": "FORGE",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#09090c",
-  "theme_color": "#09090c",
+  "background_color": "#090a0e",
+  "theme_color": "#090a0e",
   "icons": [
     {
       "src": "icon.svg",
