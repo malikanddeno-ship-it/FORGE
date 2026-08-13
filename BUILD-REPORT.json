@@ -1,0 +1,54 @@
+{
+  "name": "FORGE // OVERDRIVE v3",
+  "version": 3,
+  "quest_templates": {
+    "VALORANT": 1500,
+    "VRFS": 1500,
+    "total": 3000
+  },
+  "level_rewards": 100,
+  "daily_quests": 5,
+  "total_code_lines": 40676,
+  "line_counts": {
+    "app.js": 101,
+    "forge-clips.js": 54,
+    "forge-core.js": 82,
+    "forge-effects.js": 54,
+    "forge-ui.js": 108,
+    "index.html": 215,
+    "manifest.webmanifest": 14,
+    "quest-bank-valorant.js": 19503,
+    "quest-bank-vrfs.js": 19503,
+    "rewards.js": 702,
+    "styles.css": 335,
+    "sw.js": 5
+  },
+  "files": [
+    "BUILD-REPORT.json",
+    "README.txt",
+    "app.js",
+    "forge-clips.js",
+    "forge-core.js",
+    "forge-effects.js",
+    "forge-ui.js",
+    "icon.svg",
+    "index.html",
+    "launch.bat",
+    "manifest.webmanifest",
+    "quest-bank-valorant.js",
+    "quest-bank-vrfs.js",
+    "rewards.js",
+    "styles.css",
+    "sw.js"
+  ],
+  "compatibility": {
+    "localStorage_key": "forge_daily_v2",
+    "indexedDB": "forge_daily_clips"
+  },
+  "tests": [
+    "JavaScript syntax checked with node --check",
+    "100 generated boards / 500 generated quests validated",
+    "HTML asset references validated",
+    "HTML static JS id references validated"
+  ]
+}
